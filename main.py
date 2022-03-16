@@ -1,4 +1,4 @@
-# Problem 002:
+# Problem 2:
 #     Even Fibonacci Numbers
 #
 # Description:
