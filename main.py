@@ -59,4 +59,5 @@ def main(n: int) -> int:
 if __name__ == '__main__':
     num = int(input('Enter a natural number: '))
     ans = main(num)
-    print('Sum of Even Fibonacci numbers below {}:\n{}'.format(num, ans))
+    print('Sum of even Fibonacci numbers below {}:'.format(num))
+    print('  {}'.format(ans))
