@@ -9,7 +9,7 @@
 #     By considering the terms in the Fibonacci sequence whose values do not exceed four million,
 #       find the sum of the even-valued terms.
 
-from math import floor, sqrt
+from math import ceil, floor, log, sqrt
 
 PHI = (1 + sqrt(5)) / 2
 
@@ -30,12 +30,13 @@ def fib(i: int) -> int:
     return floor(PHI ** i / sqrt(5) + 0.5)
 
 
-def main(n: int) -> int:
+def main(n: int, it: bool) -> int:
     """
     Returns the sum of all even Fibonacci numbers less than `n`.
 
     Args:
-        n (int): Natural number
+        n  (int):  Natural number
+        it (bool): Indicate whether to use iterative method, or exact formula
 
     Returns:
         (int): Sum of all even Fibonacci numbers less than `n`
@@ -44,20 +45,38 @@ def main(n: int) -> int:
         AssertError: if incorrect params are given
     """
     assert type(n) == int and n > 0
+    assert type(it) == bool
 
-    s = 0
-    i = 0
-    next_fib = 0
-    while next_fib < n:
-        s += next_fib
-        # Step forward three times to skip to next even Fib
-        i += 3
-        next_fib = fib(i)
+    if it:
+        # Calculate sum by iteration
+        s = 0
+        i = 0
+        next_fib = 0
+        while next_fib < n:
+            s += next_fib
+            # Step forward three times to skip to next even Fib
+            i += 3
+            next_fib = fib(i)
+    else:
+        # Calculate sum with exact formula
+        s5 = sqrt(5)
+        phi = (1+s5)/2
+        phi3 = phi ** 3
+
+        j_max = ceil((log(n+0.5)+0.5*log(5))/(3*log(phi))) - 1
+
+        s = round(phi3 * (1 - phi3 ** j_max) / (s5 * (1 - phi3)))
+
     return s
 
 
 if __name__ == '__main__':
     num = int(input('Enter a natural number: '))
-    ans = main(num)
-    print('Sum of even Fibonacci numbers below {}:'.format(num))
-    print('  {}'.format(ans))
+
+    ans_it = main(num, True)
+    print('Sum of even Fibonacci numbers below {} (iteratively):'.format(num))
+    print('  {}\n'.format(ans_it))
+
+    ans_ex = main(num, False)
+    print('Sum of even Fibonacci numbers below {} (exactly):'.format(num))
+    print('  {}'.format(ans_ex))
